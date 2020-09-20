@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace _361Example.Controllers
+namespace _GroceryListService.Controllers
 {
     [Authorize]
     [ApiController]

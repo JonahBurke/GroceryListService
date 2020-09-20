@@ -1,6 +1,6 @@
 using System;
 
-namespace _361Example
+namespace _GroceryListService
 {
     public class WeatherForecast
     {

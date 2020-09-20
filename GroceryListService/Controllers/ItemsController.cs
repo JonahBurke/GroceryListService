@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using _361Example.Data;
+using _GroceryListService.Data;
 
-namespace _361Example.Controllers
+namespace _GroceryListService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
