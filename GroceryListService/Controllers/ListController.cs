@@ -18,7 +18,7 @@ namespace GroceryListService.Controllers
             _context = context;
         }
 
-        // GET: api/Items
+        // GET: api/Lists
         [HttpGet]
         public async Task<ActionResult<IEnumerable<List>>> GetList()
         {
@@ -57,7 +57,7 @@ namespace GroceryListService.Controllers
             return NoContent();
         }
 
-        // POST: api/Items
+        // POST: api/Lists
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
@@ -69,7 +69,7 @@ namespace GroceryListService.Controllers
             return CreatedAtAction("GetList", new { id = list.Id }, list);
         }
 
-        // DELETE: api/Items/5
+        // DELETE: api/Lists/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<List>> DeleteList(int id)
         {
