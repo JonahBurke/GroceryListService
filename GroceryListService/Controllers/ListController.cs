@@ -1,58 +1,42 @@
-﻿using System;
+﻿using _GroceryListService.Data;
+using GroceryListService.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using _GroceryListService.Data;
 
-namespace _GroceryListService.Controllers
+namespace GroceryListService.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ItemsController : ControllerBase
+    public class ListController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public ItemsController(ApplicationDbContext context)
+        public ListController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET: api/Items
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Item>>> GetItem()
+        public async Task<ActionResult<IEnumerable<List>>> GetList()
         {
-            return await _context.Item.ToListAsync();
+            return await _context.List.ToListAsync();
         }
 
-        // GET: api/Items/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Item>> GetItem(int id)
-        {
-            var item = await _context.Item.FindAsync(id);
 
-            if (item == null)
-            {
-                return NotFound();
-            }
-
-            return item;
-        }
-
-        // PUT: api/Items/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItem(int id, Item item)
+        public async Task<IActionResult> PutList(int id, List list)
         {
-            if (id != item.Id)
+            if (id != list.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(item).State = EntityState.Modified;
+            _context.Entry(list).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +44,7 @@ namespace _GroceryListService.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ItemExists(id))
+                if (!ListExists(id))
                 {
                     return NotFound();
                 }
@@ -77,31 +61,32 @@ namespace _GroceryListService.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Item>> PostItem(Item item)
+        public async Task<ActionResult<List>> PostList(List list)
         {
-            _context.Item.Add(item);
+            _context.List.Add(list);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetItem", new { id = item.Id }, item);
+            return CreatedAtAction("GetList", new { id = list.Id }, list);
         }
 
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Item>> DeleteItem(int id)
+        public async Task<ActionResult<List>> DeleteList(int id)
         {
-            var item = await _context.Item.FindAsync(id);
-            if (item == null)
+            var list = await _context.List.FindAsync(id);
+            if (list == null)
             {
                 return NotFound();
             }
 
-            _context.Item.Remove(item);
+            _context.List.Remove(list);
             await _context.SaveChangesAsync();
 
-            return item;
+            return list;
         }
 
-        private bool ItemExists(int id)
+
+        private bool ListExists(int id)
         {
             return _context.Item.Any(e => e.Id == id);
         }

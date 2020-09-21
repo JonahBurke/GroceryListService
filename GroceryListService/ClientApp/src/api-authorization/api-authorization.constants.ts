@@ -1,4 +1,4 @@
-export const ApplicationName = '_361Example';
+export const ApplicationName = '_GroceryListService';
 
 export const ReturnUrlType = 'returnUrl';
 

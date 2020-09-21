@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace _361Example.Data.Migrations
+namespace _GroceryListService.Data.Migrations
 {
     public partial class Initial : Migration
     {

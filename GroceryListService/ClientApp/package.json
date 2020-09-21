@@ -1,11 +1,11 @@
 {
-  "name": "_361example",
+  "name": "_GroceryListService",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:ssr": "ng run _361Example:server:dev",
+    "build:ssr": "ng run _GroceryListService:server:dev",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
