@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 //Ujwal was here
 
-namespace _361Example
+namespace _GroceryListService
 {
     public class Program
     {

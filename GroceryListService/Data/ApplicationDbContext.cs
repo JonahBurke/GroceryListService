@@ -1,4 +1,5 @@
-﻿using _361Example.Models;
+﻿using _GroceryListService.Models;
+using GroceryListService.Models;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace _361Example.Data
+namespace _GroceryListService.Data
 {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
@@ -18,5 +19,6 @@ namespace _361Example.Data
         {
         }
         public DbSet<Item> Item { get; set; }
+        public DbSet<List> List { get; set; }
     }
 }
