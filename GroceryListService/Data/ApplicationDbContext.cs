@@ -1,4 +1,5 @@
 ﻿using _GroceryListService.Models;
+using GroceryListService.Models;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -18,5 +19,6 @@ namespace _GroceryListService.Data
         {
         }
         public DbSet<Item> Item { get; set; }
+        public DbSet<List> List { get; set; }
     }
 }
