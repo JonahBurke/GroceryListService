@@ -35,6 +35,8 @@
 
   <ItemGroup>
     <Folder Include="Accessors\" />
+    <Folder Include="Engines\" />
+    <Folder Include="UnitTests\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
