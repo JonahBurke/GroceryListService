@@ -11,6 +11,7 @@
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <RootNamespace>GroceryListService</RootNamespace>
+    <UserSecretsId>a1670fe0-0c94-4c5c-872c-29861ea43b95</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,6 +36,8 @@
 
   <ItemGroup>
     <Folder Include="Accessors\" />
+    <Folder Include="Engines\" />
+    <Folder Include="UnitTests\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
