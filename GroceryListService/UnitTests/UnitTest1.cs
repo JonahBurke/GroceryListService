@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using _GroceryListService.Data;
+using GroceryListService.Accessors;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GroceryListService.UnitTests
@@ -10,15 +14,21 @@ namespace GroceryListService.UnitTests
     public class UnitTest1
     {
         [TestMethod]
-        public void passingTest()
+        public void db_connection_test()
         {
-            Assert.IsTrue(true);
-        }
+            dbAccessor testAccessor = new dbAccessor();
+            try
+            {
+                testAccessor.openConnection();
+            }
+            catch (SqlException e)
+            {
+                Assert.Fail();
+            }
 
-        [TestMethod]
-        public void failingTest()
-        {
-            Assert.IsTrue(false);
+            // If we make it this far and haven't seen an exception, then we know that we can open a connection
+            Assert.IsTrue(true);
+            testAccessor.closeConnection();
         }
     }
 }
