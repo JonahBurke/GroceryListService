@@ -12,6 +12,7 @@
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <RootNamespace>GroceryListService</RootNamespace>
     <UserSecretsId>a1670fe0-0c94-4c5c-872c-29861ea43b95</UserSecretsId>
+	<GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +26,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+	<PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
+	<PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,9 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Accessors\" />
     <Folder Include="Engines\" />
-    <Folder Include="UnitTests\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
