@@ -1,4 +1,5 @@
-﻿using _GroceryListService.Models;
+﻿using _GroceryListService.Model;
+using _GroceryListService.Models;
 using GroceryListService.Models;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
