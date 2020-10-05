@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using _GroceryListService.Data;
-using _GroceryListService.Model;
 
 namespace _GroceryListService.Controllers
 {

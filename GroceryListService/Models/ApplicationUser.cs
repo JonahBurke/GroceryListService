@@ -8,13 +8,5 @@ namespace _GroceryListService.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public int UserId { get; set; }
-
-        public string nickname { get; set; }
-
-        public string emailAddress { get; set; }
-
-        public string Password { get; set; }
-
     }
 }
