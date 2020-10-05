@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using _GroceryListService.Data;
 using GroceryListService.Accessors;
+using GroceryListService.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,7 +18,7 @@ namespace GroceryListService.UnitTests
         public void db_connection_good_string_test()
         {
             // Feed the database connector the actual connection string for the database hosted on Azure
-            dbAccessor testAccessor = new dbAccessor("Server = tcp:test-361.database.windows.net,1433; Initial Catalog = Test; Persist Security Info = False; User ID = jburke; Password = CS-Rocks; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;");
+            dbAccessor testAccessor = new dbAccessor(DatabaseInfo.connectionString);
             try
             {
                 testAccessor.openConnection();
