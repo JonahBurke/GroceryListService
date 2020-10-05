@@ -7,5 +7,9 @@ namespace GroceryListService.Accessors
 {
     public class listAccessor : dbAccessor
     {
+        public listAccessor(string connectionString) : base(connectionString)
+        {
+            //TODO
+        }
     }
 }
