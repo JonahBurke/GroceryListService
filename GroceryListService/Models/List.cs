@@ -9,5 +9,7 @@ namespace GroceryListService.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int UserId { get; set; }
+        public Dictionary<int, string> item { get; set; }
     }
 }
