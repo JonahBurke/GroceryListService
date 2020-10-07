@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace GroceryListService.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ListController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
