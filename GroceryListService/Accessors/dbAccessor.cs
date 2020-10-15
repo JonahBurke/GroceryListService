@@ -14,14 +14,19 @@ namespace GroceryListService.Accessors
             _connection = connection;
         }
 
-        public void openConnection()
+        public void OpenConnection()
         {
             _connection.Open();
         }
 
-        public void closeConnection()
+        public void CloseConnection()
         {
             _connection.Close();
+        }
+
+        public SqlConnection GetConnection()
+        {
+            return _connection;
         }
     }
 }
