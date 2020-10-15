@@ -8,13 +8,10 @@ namespace GroceryListService.Accessors
 {
     public class dbAccessor
     {
-        string _connectionString;
         SqlConnection _connection;
-
-        public dbAccessor(string connectionString)
+        public dbAccessor(SqlConnection connection)
         {
-            _connectionString = connectionString;
-            _connection = new SqlConnection(_connectionString);
+            _connection = connection;
         }
 
         public void openConnection()
@@ -25,11 +22,6 @@ namespace GroceryListService.Accessors
         public void closeConnection()
         {
             _connection.Close();
-        }
-
-        public SqlConnection getConnection()
-        {
-            return _connection;
         }
     }
 }
