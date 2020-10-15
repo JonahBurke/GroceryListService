@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GroceryListService.Accessors
 {
-    public class listAccessor : dbAccessor
+    public class ListAccessor : DbAccessor
     {
-        public listAccessor(SqlConnection connection) : base(connection)
+        public ListAccessor(SqlConnection connection) : base(connection)
         {
             //TODO
         }
