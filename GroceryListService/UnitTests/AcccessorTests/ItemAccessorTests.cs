@@ -18,9 +18,11 @@ namespace GroceryListService.UnitTests
         {
             ItemAccessor ia = new ItemAccessor(new SqlConnection(DatabaseInfo.connectionString));
             string itemName = "Item 1";
-            List testList = new List();
-            testList.Name = "List 1";
-            testList.UserId = 1;
+            List testList = new List
+            {
+                Name = "List 1",
+                UserId = 1
+            };
             Assert.IsTrue(ia.ItemExists(itemName, testList));
         }
     }

@@ -27,15 +27,16 @@ namespace GroceryListService.Accessors
                 cmd.Connection = GetConnection();
                 try
                 {
-                    OpenConnection();
+                    base.OpenConnection();
                     SqlDataReader reader = cmd.ExecuteReader();
-                    CloseConnection();
                     if (reader.HasRows)
                     {
+                        base.CloseConnection();
                         return true;
                     }
                     else
                     {
+                        base.CloseConnection();
                         return false;
                     }
 

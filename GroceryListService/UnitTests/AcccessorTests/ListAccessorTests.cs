@@ -18,8 +18,10 @@ namespace GroceryListService.UnitTests
         {
             ListAccessor la = new ListAccessor(new SqlConnection(DatabaseInfo.connectionString));
             string listName = "List 2";
-            User testUser = new User();
-            testUser.Email = "test";
+            User testUser = new User
+            {
+                Email = "email"
+            };
             Assert.IsTrue(la.ListExists(listName, testUser));
         }
     }

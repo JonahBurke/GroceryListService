@@ -16,7 +16,7 @@ namespace GroceryListService.Accessors
 
         public Boolean ItemExists(string itemName, List list)
         {
-            string query = "SELECT * FROM \"Item\" as i JOIN \"List\" as l ON i.listId = l.listId" +
+            string query = "SELECT * FROM \"Item\" as i JOIN \"List\" as l ON i.listId = l.listId " +
                 "WHERE i.\"name\" = @ItemName AND l.\"name\" = @ListName AND l.\"userId\" = @UserID;";
             using (SqlCommand cmd = new SqlCommand(query))
             {
@@ -30,15 +30,16 @@ namespace GroceryListService.Accessors
                 cmd.Connection = GetConnection();
                 try
                 {
-                    OpenConnection();
+                    base.OpenConnection();
                     SqlDataReader reader = cmd.ExecuteReader();
-                    CloseConnection();
                     if (reader.HasRows)
                     {
+                        base.CloseConnection();
                         return true;
                     }
                     else
                     {
+                        base.CloseConnection();
                         return false;
                     }
 
