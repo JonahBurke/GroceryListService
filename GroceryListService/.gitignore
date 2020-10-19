@@ -229,6 +229,3 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
-
-# Database login info
-DatabaseInfo.cs
