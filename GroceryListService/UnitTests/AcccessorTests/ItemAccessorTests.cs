@@ -25,5 +25,17 @@ namespace GroceryListService.UnitTests
             };
             Assert.IsTrue(ia.ItemExists(itemName, testList));
         }
+        [TestMethod]
+        public void test_item_remove()
+        {
+            ItemAccessor ia = new ItemAccessor(new SqlConnection(DatabaseInfo.connectionString));
+            string itemName = "Item 1";
+            List testList = new List
+            {
+                Name = "List 1",
+                UserId = 1
+            };
+            Assert.IsTrue(ia.RemoveItem(itemName, testList));
+        }
     }
 }
