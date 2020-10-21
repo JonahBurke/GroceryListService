@@ -14,9 +14,9 @@ namespace GroceryListService.Accessors
             //TODO
         }
 
-        public Boolean ItemExists(string itemName, List list)
+        public Item SelectItem(string itemName, List list)
         {
-            string query = "SELECT * FROM \"Item\" as i JOIN \"List\" as l ON i.listId = l.listId " +
+            string query = "SELECT i.itemId, i.\"name\", i.\"quantity\" FROM \"Item\" as i JOIN \"List\" as l ON i.listId = l.listId " +
                 "WHERE i.\"name\" = @ItemName AND l.\"name\" = @ListName AND l.\"userId\" = @UserID;";
             using (SqlCommand cmd = new SqlCommand(query))
             {
@@ -32,21 +32,74 @@ namespace GroceryListService.Accessors
                 {
                     base.OpenConnection();
                     SqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.HasRows)
+                    Item i = null;
+                    while (reader.Read())
                     {
-                        base.CloseConnection();
-                        return true;
+                        i = new Item
+                        {
+                            ListId = list.Id,
+                            Id = Int32.Parse(reader["itemId"].ToString()),
+                            Name = reader["name"].ToString(),
+                            Quantity = reader.IsDBNull(2)?-1: Int32.Parse(reader["quantity"].ToString()) // -1 is the value for null table entries, since ints can't be null
+                        };
                     }
-                    else
-                    {
-                        base.CloseConnection();
-                        return false;
-                    }
+                    reader.Close();
+                    base.CloseConnection();
+                    return i;
 
                 }
                 catch (SqlException)
                 {
-                    return false;
+                    return null;
+                }
+            }
+        }
+
+        public Boolean ItemExists(string itemName, List list)
+        {
+            return SelectItem(itemName, list) != null;
+        }
+
+        public List<Item> SelectAllItems(List list)
+        {
+            string query = "SELECT i.itemId, i.\"name\", i.\"quantity\" FROM \"Item\" as i JOIN \"List\" as l ON i.listId = l.listId " +
+                "WHERE l.\"name\" = @ListName AND l.\"userId\" = @UserID;";
+            using (SqlCommand cmd = new SqlCommand(query))
+            {
+                cmd.Parameters.Add("@ListName", System.Data.SqlDbType.NVarChar, 100);
+                cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
+                cmd.Parameters["@ListName"].Value = list.Name;
+                cmd.Parameters["@UserID"].Value = list.UserId;
+                cmd.Connection = GetConnection();
+                try
+                {
+                    base.OpenConnection();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    List<Item> itemList = null;
+                    if (reader.HasRows)
+                    {
+                        itemList = new List<Item>();
+                        while (reader.Read())
+                        {
+                            itemList.Add(
+                                new Item
+                                {
+                                    ListId = list.Id,
+                                    Id = Int32.Parse(reader["itemId"].ToString()),
+                                    Name = reader["name"].ToString(),
+                                    Quantity = reader.IsDBNull(2) ? -1 : Int32.Parse(reader["quantity"].ToString()) // -1 is the value for null table entries, since ints can't be null
+                            });
+                        }
+                    }
+                    
+                    reader.Close();
+                    base.CloseConnection();
+                    return itemList;
+
+                }
+                catch (SqlException)
+                {
+                    return null;
                 }
             }
         }
