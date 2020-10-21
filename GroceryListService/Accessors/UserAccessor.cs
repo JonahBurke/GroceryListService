@@ -1,4 +1,5 @@
-﻿using GroceryListService.Models;
+﻿using _GroceryListService.Models;
+using GroceryListService.Models;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -7,26 +8,23 @@ using System.Threading.Tasks;
 
 namespace GroceryListService.Accessors
 {
-    public class ItemAccessor : DbAccessor
+    public class UserAccessor : DbAccessor
     {
-        public ItemAccessor(SqlConnection connection) : base(connection)
+        public UserAccessor(SqlConnection connection) : base(connection)
         {
             //TODO
         }
 
-        public Boolean ItemExists(string itemName, List list)
+        public Boolean UserExists(string email, string password)
         {
-            string query = "SELECT * FROM \"Item\" as i JOIN \"List\" as l ON i.listId = l.listId " +
-                "WHERE i.\"name\" = @ItemName AND l.\"name\" = @ListName AND l.\"userId\" = @UserID;";
+            string query = "SELECT * FROM \"User\" WHERE \"email\" = @Email AND \"password\" = @Password;";
             using (SqlCommand cmd = new SqlCommand(query))
             {
-                cmd.Parameters.Add("@ItemName", System.Data.SqlDbType.NVarChar, 100);
-                cmd.Parameters.Add("@ListName", System.Data.SqlDbType.NVarChar, 100);
-                cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
+                cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 255);
+                cmd.Parameters.Add("@Password", System.Data.SqlDbType.NVarChar, 100);
 
-                cmd.Parameters["@ItemName"].Value = itemName;
-                cmd.Parameters["@ListName"].Value = list.Name;
-                cmd.Parameters["@UserID"].Value = list.UserId;
+                cmd.Parameters["@Email"].Value = email;
+                cmd.Parameters["@Password"].Value = password;
                 cmd.Connection = GetConnection();
                 try
                 {
@@ -36,13 +34,12 @@ namespace GroceryListService.Accessors
                     {
                         base.CloseConnection();
                         return true;
-                    }
+                    } 
                     else
                     {
                         base.CloseConnection();
                         return false;
                     }
-
                 }
                 catch (SqlException)
                 {

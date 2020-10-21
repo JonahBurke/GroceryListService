@@ -6,22 +6,27 @@ using System.Threading.Tasks;
 
 namespace GroceryListService.Accessors
 {
-    public class dbAccessor
+    public class DbAccessor
     {
         SqlConnection _connection;
-        public dbAccessor(SqlConnection connection)
+        public DbAccessor(SqlConnection connection)
         {
             _connection = connection;
         }
 
-        public void openConnection()
+        public void OpenConnection()
         {
             _connection.Open();
         }
 
-        public void closeConnection()
+        public void CloseConnection()
         {
             _connection.Close();
+        }
+
+        public SqlConnection GetConnection()
+        {
+            return _connection;
         }
     }
 }
