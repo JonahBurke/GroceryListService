@@ -16,14 +16,9 @@ namespace GroceryListService.UnitTests
         {
             // setup
             ItemAccessor ia = new ItemAccessor(new SqlConnection(DatabaseInfo.connectionString));
-            string itemName = "Item 1";
-            List testList = new List
-            {
-                Name = "List 1",
-                UserId = 1
-            };
+            int id = 1;
             // Act and assert are heppening simultaneously here
-            Assert.IsTrue(ia.ItemExists(itemName, testList));
+            Assert.IsTrue(ia.ItemExists(id));
         }
 
         [TestMethod]
@@ -31,14 +26,10 @@ namespace GroceryListService.UnitTests
         {
             // setup
             ItemAccessor ia = new ItemAccessor(new SqlConnection(DatabaseInfo.connectionString));
+            int id = 1;
             string itemName = "Item 1";
-            List testList = new List
-            {
-                Name = "List 1",
-                UserId = 1
-            };
             //Act
-            Item i = ia.SelectItem(itemName, testList);
+            Item i = ia.SelectItem(id);
             // Assert for each of the qualities of Item
             Assert.AreEqual(itemName, i.Name);
             Assert.AreEqual(1, i.Id);
