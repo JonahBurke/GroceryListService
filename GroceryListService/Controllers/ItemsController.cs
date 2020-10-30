@@ -13,12 +13,10 @@ namespace _GroceryListService.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        //private readonly ApplicationDbContext _context;
         private readonly ItemAccessor _accessor;
 
         public ItemsController(ItemAccessor accessor)
         {
-            //_context = context;
             _accessor = accessor;
         }
 
