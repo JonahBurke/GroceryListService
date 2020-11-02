@@ -142,6 +142,7 @@ function animation() {
 }
 //cart function 
 function cart(name, price, url, con, btncart) {
+    
     var item = {
         name: name,
         price: price,
@@ -159,12 +160,24 @@ function cart(name, price, url, con, btncart) {
     }
     products = JSON.parse(localStorage.getItem("cart"));
 
-    //Call C# Api to push Item in the cart
 
     cart_n.innerHTML = `[${products.length}]`;
     document.getElementById(btncart).style.display = "none";
-    animation();
+    animation();  
+
+
+    /*
+    //Call C# Api to push Item in the cart
+    //https://localhost:44312/API/InsertTODatabase?ProductName=Tomato&Price=100&UserID=60080527
+    var Domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", Domain + "/API/InsertTODatabase" + " ? " + "ProductName=" + name + "&Price=" + price + "&UserID=" + 60080527, false); // false for synchronous request
+    xmlHttp.send(null);
+
+    window.alert(xmlHttp.responseText);
+    */
 }
+
 
 function cart2(name, price, url, con, btncart) {
     var item = {
