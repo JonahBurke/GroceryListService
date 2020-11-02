@@ -112,13 +112,13 @@ namespace GroceryListService.Accessors
             }
         }
 
-        public void RemoveItem(Item item)
+        public void RemoveItem(int id)
         {
             string query = "DELETE FROM \"Item\" WHERE itemId = @ItemID;";
             using SqlCommand cmd = new SqlCommand(query, GetConnection());
             cmd.Parameters.Add("@ItemID", System.Data.SqlDbType.Int);
 
-            cmd.Parameters["@ItemID"].Value = item.Id;
+            cmd.Parameters["@ItemID"].Value = id;
             try
             {
                 OpenConnection();
