@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <Folder Include="Engines\" />
+    <Folder Include="wwwroot\img\login\" />
   </ItemGroup>
 
   
