@@ -12,9 +12,7 @@ namespace GroceryListService.UnitTests
         public void test_user_exists()
         {
             UserAccessor ua = new UserAccessor(new SqlConnection(DatabaseInfo.connectionString));
-            string email = "email";
-            string password = "password";
-            Assert.IsTrue(ua.UserExists(email, password));
+            Assert.IsTrue(ua.UserExists(1));
         }
     }
 }
