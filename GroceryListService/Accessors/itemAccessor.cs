@@ -104,7 +104,7 @@ namespace GroceryListService.Accessors
                 OpenConnection();
                 SqlDataReader reader = cmd.ExecuteReader();
                 CloseConnection();
-
+                return;
             }
             catch (SqlException)
             {
@@ -124,7 +124,7 @@ namespace GroceryListService.Accessors
                 OpenConnection();
                 SqlDataReader reader = cmd.ExecuteReader();
                 CloseConnection();
-
+                return;
             }
             catch (SqlException)
             {
@@ -150,7 +150,7 @@ namespace GroceryListService.Accessors
                 OpenConnection();
                 SqlDataReader reader = cmd.ExecuteReader();
                 CloseConnection();
-
+                return;
             }
             catch (SqlException)
             {
