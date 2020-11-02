@@ -7,9 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-//Ujwal was here
-
-namespace _GroceryListService
+namespace WebApplication1
 {
     public class Program
     {
