@@ -1,50 +1,99 @@
-﻿using _GroceryListService.Models;
-using GroceryListService.Models;
+﻿using GroceryListService.Models;
 using Microsoft.Data.SqlClient;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GroceryListService.Accessors
 {
     public class UserAccessor : DbAccessor
     {
-        public UserAccessor(SqlConnection connection) : base(connection)
+        public UserAccessor(SqlConnection connection) : base(connection) { }
+
+        public Boolean UserExists(int id)
         {
-            //TODO
+            return SelectUser(id) != null;
         }
 
-        public Boolean UserExists(string email, string password)
+        public User SelectUser(int id)
         {
-            string query = "SELECT * FROM \"User\" WHERE \"email\" = @Email AND \"password\" = @Password;";
-            using (SqlCommand cmd = new SqlCommand(query))
+            string query = "SELECT \"email\", \"password\", \"nickname\" FROM \"User\" WHERE userId = @UserID;";
+            using (SqlCommand cmd = new SqlCommand(query, GetConnection()))
             {
-                cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 255);
-                cmd.Parameters.Add("@Password", System.Data.SqlDbType.NVarChar, 100);
+                cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
 
-                cmd.Parameters["@Email"].Value = email;
-                cmd.Parameters["@Password"].Value = password;
-                cmd.Connection = GetConnection();
+                cmd.Parameters["@UserID"].Value = id;
                 try
                 {
-                    base.OpenConnection();
+                    OpenConnection();
                     SqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.HasRows)
+                    User u = null;
+                    while (reader.Read())
                     {
-                        base.CloseConnection();
-                        return true;
-                    } 
-                    else
-                    {
-                        base.CloseConnection();
-                        return false;
+                        u = new User
+                        {
+                            Id = id,
+                            Email = reader["email"].ToString(),
+                            Password = reader["Password"].ToString(),
+                            Nickname = reader["nickname"].ToString()
+                        };
                     }
+
+                    CloseConnection();
+                    return u;
                 }
                 catch (SqlException)
                 {
-                    return false;
+                    return null;
                 }
+            }
+        }
+
+        public void InsertUser(string email, string password, string nickname)
+        {
+            string query = "INSERT INTO \"User\" (\"email\", \"password\", \"nickname\") values (@Email, @Password, @NickName);";
+            using (SqlCommand cmd = new SqlCommand(query, GetConnection()))
+            {
+                cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 255);
+                cmd.Parameters.Add("@Password", System.Data.SqlDbType.NVarChar, 100);
+                cmd.Parameters.Add("@NickName", System.Data.SqlDbType.NVarChar, 255);
+
+                cmd.Parameters["@Email"].Value = email;
+                cmd.Parameters["@Password"].Value = password;
+                cmd.Parameters["@NickName"].Value = nickname;
+                try
+                {
+                    OpenConnection();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    CloseConnection();
+                    return;
+                }
+                catch (SqlException)
+                {
+                    return;
+                }
+            }
+        }
+
+        public void UpdateUser(User user)
+        {
+            string query = "UPDATE \"User\" SET \"email\" = @Email, \"password\" = @Password, \"nickname\" = @NickName;";
+            using SqlCommand cmd = new SqlCommand(query, GetConnection());
+            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 255);
+            cmd.Parameters.Add("@Password", System.Data.SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@NickName", System.Data.SqlDbType.NVarChar, 255);
+
+            cmd.Parameters["@Email"].Value = user.Email;
+            cmd.Parameters["@Password"].Value = user.Password;
+            cmd.Parameters["@NickName"].Value = user.Nickname;
+            try
+            {
+                OpenConnection();
+                SqlDataReader reader = cmd.ExecuteReader();
+                CloseConnection();
+                return;
+            }
+            catch (SqlException)
+            {
+                return;
             }
         }
     }
