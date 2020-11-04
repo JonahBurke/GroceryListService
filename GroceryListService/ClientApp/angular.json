@@ -20,12 +20,23 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
-            "assets": ["src/assets"],
+            "assets": [ "src/assets"],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
+
+
             ],
-            "scripts": []
+            "scripts": [
+              "js/jquery-3.3.1.min.js",
+              "js/bootstrap.min.js",
+              "js/jquery.nice-select.min.js",
+              "js/jquery-ui.min.js",
+              "js/jquery.slicknav.js",
+              "js/mixitup.min.js",
+              "js/owl.carousel.min.js",
+              "js/main.js"
+            ]
           },
           "configurations": {
             "production": {

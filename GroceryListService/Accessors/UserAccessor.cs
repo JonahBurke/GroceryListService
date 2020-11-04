@@ -1,4 +1,4 @@
-﻿using GroceryListService.Models;
+using GroceryListService.Models;
 using Microsoft.Data.SqlClient;
 using System;
 
