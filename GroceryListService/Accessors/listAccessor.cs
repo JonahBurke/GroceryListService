@@ -6,6 +6,7 @@ namespace GroceryListService.Accessors
 {
     public class ListAccessor : DbAccessor
     {
+        public ListAccessor(SqlConnection connection) : base(connection) { }
 
         public Boolean ListExists(string listName, User user)
         {

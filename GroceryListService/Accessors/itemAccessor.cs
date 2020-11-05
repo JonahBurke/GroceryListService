@@ -7,7 +7,7 @@ namespace GroceryListService.Accessors
 {
     public class ItemAccessor : DbAccessor
     {
-        public ItemAccessor(SqlConnection connection) : base(connection){}
+        public ItemAccessor(SqlConnection connection) : base(connection) { }
 
         public Item SelectItem(int id)
         {
@@ -73,7 +73,7 @@ namespace GroceryListService.Accessors
                                 Id = int.Parse(reader["itemId"].ToString()),
                                 Name = reader["name"].ToString(),
                                 Quantity = reader.IsDBNull(2) ? -1 : int.Parse(reader["quantity"].ToString()) // -1 is the value for null table entries, since ints can't be null
-                                });
+                            });
                     }
                 }
 
