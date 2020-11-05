@@ -2,96 +2,160 @@
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Threading.Tasks;
 
 namespace GroceryListService.Accessors
 {
     public class ItemAccessor : DbAccessor
     {
-        public ItemAccessor(SqlConnection connection) : base(connection)
-        {
-            //TODO
-        }
+        public ItemAccessor(SqlConnection connection) : base(connection) { }
 
-        public Boolean ItemExists(string itemName, List list)
+        public Item SelectItem(int id)
         {
-            string query = "SELECT * FROM \"Item\" as i JOIN \"List\" as l ON i.listId = l.listId " +
-                "WHERE i.\"name\" = @ItemName AND l.\"name\" = @ListName AND l.\"userId\" = @UserID;";
-            using (SqlCommand cmd = new SqlCommand(query))
+            string query = "SELECT \"name\", \"quantity\", listId FROM \"Item\" WHERE itemId = @ItemID;";
+            using SqlCommand cmd = new SqlCommand(query, GetConnection());
+            cmd.Parameters.Add("@ItemID", System.Data.SqlDbType.Int);
+
+            cmd.Parameters["@ItemID"].Value = id;
+            try
             {
-                cmd.Parameters.Add("@ItemName", System.Data.SqlDbType.NVarChar, 100);
-                cmd.Parameters.Add("@ListName", System.Data.SqlDbType.NVarChar, 100);
-                cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
-
-                cmd.Parameters["@ItemName"].Value = itemName;
-                cmd.Parameters["@ListName"].Value = list.Name;
-                cmd.Parameters["@UserID"].Value = list.UserId;
-                cmd.Connection = GetConnection();
-                try
+                OpenConnection();
+                SqlDataReader reader = cmd.ExecuteReader();
+                Item i = null;
+                while (reader.Read())
                 {
-                    base.OpenConnection();
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.HasRows)
+                    i = new Item
                     {
-                        base.CloseConnection();
-                        return true;
-                    }
-                    else
-                    {
-                        base.CloseConnection();
-                        return false;
-                    }
+                        ListId = int.Parse(reader["listId"].ToString()),
+                        Id = id,
+                        Name = reader["name"].ToString(),
+                        Quantity = reader.IsDBNull(1) ? -1 : int.Parse(reader["quantity"].ToString()) // -1 is the value for null table entries, since ints can't be null
+                    };
+                }
+                reader.Close();
+                CloseConnection();
+                return i;
 
-                }
-                catch (SqlException)
-                {
-                    return false;
-                }
+            }
+            catch (SqlException)
+            {
+                return null;
             }
         }
-        public Boolean RemoveItem(string itemName, List list)
+
+        public Boolean ItemExists(int id)
         {
-            string query = "DELETE FROM \"Item\" as i JOIN \"List\" as l ON i.listId = l.listId " +
-                "WHERE i.\"name\" = @ItemName AND l.\"name\" = @ListName AND l.\"userId\" = @UserID;";
-            using (SqlCommand cmd = new SqlCommand(query))
+            return SelectItem(id) != null;
+        }
+
+        public List<Item> SelectAllItems(List list)
+        {
+            string query = "SELECT i.itemId, i.\"name\", i.\"quantity\" FROM \"Item\" as i JOIN \"List\" as l ON i.listId = l.listId " +
+                "WHERE l.\"name\" = @ListName AND l.\"userId\" = @UserID;";
+            using SqlCommand cmd = new SqlCommand(query, GetConnection());
+            cmd.Parameters.Add("@ListName", System.Data.SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
+            cmd.Parameters["@ListName"].Value = list.Name;
+            cmd.Parameters["@UserID"].Value = list.UserId;
+            try
             {
-                cmd.Parameters.Add("@ItemName", System.Data.SqlDbType.NVarChar, 100);
-                cmd.Parameters.Add("@ListName", System.Data.SqlDbType.NVarChar, 100);
-                cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
-
-                cmd.Parameters["@ItemName"].Value = itemName;
-                cmd.Parameters["@ListName"].Value = list.Name;
-                cmd.Parameters["@UserID"].Value = list.UserId;
-                cmd.Connection = GetConnection();
-                try
+                OpenConnection();
+                SqlDataReader reader = cmd.ExecuteReader();
+                List<Item> itemList = null;
+                if (reader.HasRows)
                 {
-                    base.OpenConnection();
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.HasRows)
+                    itemList = new List<Item>();
+                    while (reader.Read())
                     {
-                        base.CloseConnection();
-                        return true;
+                        itemList.Add(
+                            new Item
+                            {
+                                ListId = list.Id,
+                                Id = int.Parse(reader["itemId"].ToString()),
+                                Name = reader["name"].ToString(),
+                                Quantity = reader.IsDBNull(2) ? -1 : int.Parse(reader["quantity"].ToString()) // -1 is the value for null table entries, since ints can't be null
+                            });
                     }
-                    else
-                    {
-                        base.CloseConnection();
-                        return false;
-                    }
+                }
 
-                }
-                catch (SqlException)
-                {
-                    return false;
-                }
+                reader.Close();
+                CloseConnection();
+                return itemList;
+
+            }
+            catch (SqlException)
+            {
+                return null;
             }
         }
-        public Boolean InsertItem(string itemName, List list)
+
+        public void InsertItem(Item item)
         {
-            //TODO
-            return false;
+            string query = "INSERT INTO \"Item\" (\"name\", \"quantity\", listId) VALUES (@Name, @Quantity, @ListID);";
+            using SqlCommand cmd = new SqlCommand(query, GetConnection());
+            cmd.Parameters.Add("@Name", System.Data.SqlDbType.VarChar, 100);
+            cmd.Parameters.Add("@Quantity", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@ListID", System.Data.SqlDbType.Int);
+
+            cmd.Parameters["@Name"].Value = item.Name;
+            cmd.Parameters["@Quantity"].Value = item.Quantity;
+            cmd.Parameters["@ListID"].Value = item.ListId;
+            try
+            {
+                OpenConnection();
+                SqlDataReader reader = cmd.ExecuteReader();
+                CloseConnection();
+
+            }
+            catch (SqlException)
+            {
+                return;
+            }
         }
 
+        public void RemoveItem(int id)
+        {
+            string query = "DELETE FROM \"Item\" WHERE itemId = @ItemID;";
+            using SqlCommand cmd = new SqlCommand(query, GetConnection());
+            cmd.Parameters.Add("@ItemID", System.Data.SqlDbType.Int);
+
+            cmd.Parameters["@ItemID"].Value = id;
+            try
+            {
+                OpenConnection();
+                SqlDataReader reader = cmd.ExecuteReader();
+                CloseConnection();
+
+            }
+            catch (SqlException)
+            {
+                return;
+            }
+        }
+
+        public void UpdateItem(Item item)
+        {
+            string query = "UPDATE \"Item\" SET \"name\" = @Name, \"quantity\" = @Quantity, listId = @ListID WHERE itemId = @ItemID;";
+            using SqlCommand cmd = new SqlCommand(query, GetConnection());
+            cmd.Parameters.Add("@Name", System.Data.SqlDbType.VarChar, 100);
+            cmd.Parameters.Add("@Quantity", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@ListID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@ItemID", System.Data.SqlDbType.Int);
+
+            cmd.Parameters["@Name"].Value = item.Name;
+            cmd.Parameters["@Quantity"].Value = item.Quantity;
+            cmd.Parameters["@ListID"].Value = item.ListId;
+            cmd.Parameters["@ItemID"].Value = item.Id;
+            try
+            {
+                OpenConnection();
+                SqlDataReader reader = cmd.ExecuteReader();
+                CloseConnection();
+
+            }
+            catch (SqlException)
+            {
+                return;
+            }
+        }
     }
 }

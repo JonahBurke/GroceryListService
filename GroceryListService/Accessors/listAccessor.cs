@@ -1,18 +1,12 @@
 ﻿using GroceryListService.Models;
 using Microsoft.Data.SqlClient;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GroceryListService.Accessors
 {
     public class ListAccessor : DbAccessor
     {
-        public ListAccessor(SqlConnection connection) : base(connection)
-        {
-            //TODO
-        }
+        public ListAccessor(SqlConnection connection) : base(connection) { }
 
         public Boolean ListExists(string listName, User user)
         {
