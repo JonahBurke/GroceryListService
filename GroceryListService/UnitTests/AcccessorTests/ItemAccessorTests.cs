@@ -50,7 +50,7 @@ namespace GroceryListService.UnitTests
             List<Item> itemList = ia.SelectAllItems(testList);
             // Assert that we should get 2 items from the database here
             Assert.AreEqual(2, itemList.Count());
-            
+
         }
     }
 }
