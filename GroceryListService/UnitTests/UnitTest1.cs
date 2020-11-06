@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using _GroceryListService.Data;
-using GroceryListService.Accessors;
+﻿using GroceryListService.Accessors;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GroceryListService.UnitTests
@@ -40,9 +34,9 @@ namespace GroceryListService.UnitTests
         public void db_connection_bad_string_test()
         {
             // We need the conection string to begin like a real connection string, otherwise we get an argument exception rather than an SQL exception
-            dbAccessor testAccessor = new dbAccessor("Server = bad_input;");
+            DbAccessor testAccessor = new DbAccessor(new SqlConnection("Server = bad_input;"));
             // Open the bad connection, which will throw the SQL exception since it can't open the "server"
-            testAccessor.openConnection();
+            testAccessor.OpenConnection();
             // The connection never actually gets opened, so no need to close the connection
         }
 
