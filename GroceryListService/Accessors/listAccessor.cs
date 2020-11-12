@@ -1,6 +1,7 @@
 ﻿using GroceryListService.Models;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Collections.Generic;
 
 namespace GroceryListService.Accessors
 {
@@ -39,6 +40,44 @@ namespace GroceryListService.Accessors
                 reader.Close();
                 CloseConnection();
                 return l;
+
+            }
+            catch (SqlException)
+            {
+                return null;
+            }
+        }
+
+        public List<List> SelectAllLists(User user)
+        {
+            string query = "SELECT l.listId, l.\"name\" FROM \"List\" as l JOIN \"User\" as u ON u.userId = l.userId " +
+                "WHERE u.userId = @UserID;";
+            using SqlCommand cmd = new SqlCommand(query, GetConnection());
+            cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
+            cmd.Parameters["@UserID"].Value = user.Id;
+            try
+            {
+                OpenConnection();
+                SqlDataReader reader = cmd.ExecuteReader();
+                List<List> listList = null;
+                if (reader.HasRows)
+                {
+                    listList = new List<List>();
+                    while (reader.Read())
+                    {
+                        listList.Add(
+                            new List
+                            {
+                                UserId = user.Id,
+                                Id = int.Parse(reader["listId"].ToString()),
+                                Name = reader["name"].ToString()
+                            });
+                    }
+                }
+
+                reader.Close();
+                CloseConnection();
+                return listList;
 
             }
             catch (SqlException)
