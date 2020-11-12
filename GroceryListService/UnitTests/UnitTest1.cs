@@ -1,4 +1,5 @@
 ﻿using GroceryListService.Accessors;
+using GroceryListService.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,10 +12,10 @@ namespace GroceryListService.UnitTests
         public void db_connection_good_string_test()
         {
             // Feed the database connector the actual connection string for the database hosted on Azure
-          /*  dbAccessor testAccessor = new dbAccessor(DatabaseInfo.connectionString);
+            DbAccessor testAccessor = new DbAccessor(new SqlConnection(DatabaseInfo.connectionString));
             try
             {
-                testAccessor.openConnection();
+                testAccessor.OpenConnection();
             }
             catch (SqlException e)
             {
@@ -26,7 +27,7 @@ namespace GroceryListService.UnitTests
             // If we make it this far and haven't seen an exception, then we know that we can open a connection
             Assert.IsTrue(true);
             // Close the connection
-            testAccessor.closeConnection(); */
+            testAccessor.CloseConnection();
         }
 
         [TestMethod]
