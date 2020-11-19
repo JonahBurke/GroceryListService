@@ -42,5 +42,19 @@ namespace GroceryListService.UnitTests
             HomePage obj = new HomePage();
             Assert.AreEqual(obj.Name, "GroceryListService Group-9");
         }*/
+        
+        [TestMethod]
+        public void ListTest_tomatoes_updateListname()
+        {
+            string name = "tomatos";
+            int expectedId = 3;
+            
+            List expectedList = new List{Id = 3, Listname = "tomatoes", quantity = 3, userID = 1};
+            
+            MockListRepo temp = new MockListRepo();
+            
+            List actualist = temp.updateListname(expectedId, newname);
+            Assert. AreEqual(expectedList.Listname, actualist. Listname);
+        }
     }
 }
