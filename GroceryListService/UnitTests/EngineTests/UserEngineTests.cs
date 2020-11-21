@@ -82,22 +82,6 @@ namespace GroceryListService.UnitTests.EngineTests
         }
 
         [TestMethod]
-        public void insert_user_good_data() // We're not going to test good data, because I don't want to mess with the database too much
-        {
-            // Setup
-            User user = new User
-            {
-                Email = "test",
-                Password = "test",
-                Nickname = null
-            };
-            // Act
-            int result = UserEngine.InsertUser(user);
-            // Assert
-            Assert.AreEqual(1, result); // -2 because the engine catches the bad data
-        }
-
-        [TestMethod]
         public void update_user_bad_data() // We're not going to test good data, because I don't want to mess with the database too much
         {
             // Setup
