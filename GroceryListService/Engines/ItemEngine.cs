@@ -1,37 +1,78 @@
-﻿using NuGet.Frameworks;
+﻿using GroceryListService.Accessors;
+using GroceryListService.Data;
+using GroceryListService.Models;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GroceryListService.Engines
 {
     public class ItemEngine
     {
-        int _id;
-        string _name;
-        int _quantity;
-
-        public ItemEngine(int id, string name, int quantity)
+        public Item SelectItem(int id)
         {
-            _id = id;
-            _name = name;
-            _quantity = quantity;
+            if (id > 0) // do a little bit of data "cleaning"
+            {
+                ItemAccessor ia = new ItemAccessor(new SqlConnection(DatabaseInfo.connectionString));
+                return ia.SelectItem(id);
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public int getID()
+        public Boolean ItemExists(int id)
         {
-            return _id;
+            if (id > 0) // do a little bit of data "cleaning"
+            {
+                ItemAccessor ia = new ItemAccessor(new SqlConnection(DatabaseInfo.connectionString));
+                return ia.ItemExists(id);
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public string getName()
+        public List<Item> SelectAllItems(List list)
         {
-            return _name;
+            if (list.Id > 0 && list.UserId > 0) // do a little bit of data "cleaning"
+            { 
+                ItemAccessor ia = new ItemAccessor(new SqlConnection(DatabaseInfo.connectionString));
+                return ia.SelectAllItems(list);
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public int getQuantity()
+        public void InsertItem(Item item)
         {
-            return _quantity;
+            if (item.ListId > 0 && item.Name != null) // do a little bit of data "cleaning"
+            {
+                ItemAccessor ia = new ItemAccessor(new SqlConnection(DatabaseInfo.connectionString));
+                ia.InsertItem(item);
+            }
+        }
+
+        public void RemoveItem(int id) // do a little bit of data "cleaning"
+        {
+            if (id > 0)
+            {
+                ItemAccessor ia = new ItemAccessor(new SqlConnection(DatabaseInfo.connectionString));
+                ia.RemoveItem(id);
+            }
+        }
+
+        public void UpdateItem(Item item)
+        {
+            if (item.ListId > 0 && item.Id > 0 && item.Name != null) // do a little bit of data "cleaning"
+            {
+                ItemAccessor ia = new ItemAccessor(new SqlConnection(DatabaseInfo.connectionString));
+                ia.InsertItem(item);
+            }
         }
     }
 }

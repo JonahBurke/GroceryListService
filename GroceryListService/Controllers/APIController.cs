@@ -13,10 +13,10 @@ namespace GroceryListService.Controllers
         {
             return View();
         }
-        public string InsertTODatabase(string ProductName, string Price, string UserID)
+        public string InsertTODatabase(string ProductName, string Price, string UserID, string ListName)
         {
 
-            return HttpUtility.HtmlEncode("Product Name is " + ProductName + ", Price is " + Price + " User ID is " + UserID);
+            return HttpUtility.HtmlEncode("Product Name is " + ProductName + ", Price is " + Price + " User ID is " + UserID + " List name is " + ListName);
         }
     }
 }

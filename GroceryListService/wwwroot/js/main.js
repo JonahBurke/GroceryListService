@@ -166,16 +166,20 @@ function cart(name, price, url, con, btncart) {
     animation();  
 
 
-    /*
-    //Call C# Api to push Item in the cart
-    //https://localhost:44312/API/InsertTODatabase?ProductName=Tomato&Price=100&UserID=60080527
-    var Domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", Domain + "/API/InsertTODatabase" + " ? " + "ProductName=" + name + "&Price=" + price + "&UserID=" + 60080527, false); // false for synchronous request
-    xmlHttp.send(null);
+   
 
-    window.alert(xmlHttp.responseText);
-    */
+
+var ListName = "List1";
+//Call C# Api to push Item in the cart
+//https://localhost:44312/API/InsertTODatabase?ProductName=Tomato&Price=100&UserID=60080527
+var Domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+var xmlHttp = new XMLHttpRequest();
+var str = Domain + "/API/InsertTODatabase" + "?" + "ProductName=" + name + "&Price=" + price + "&UserID=" + 60080527 + "&ListName=" + ListName;
+xmlHttp.open("GET", str, false); // false for synchronous request
+xmlHttp.send(null);
+window.alert(str);
+window.alert(xmlHttp.responseText);
+
 }
 
 
