@@ -8,17 +8,17 @@
     <div class="login-page">
         <div class="form">
             <form class="register-form">
-                <input type="text" placeholder="user name" />
-                <input type="text" placeholder="password" />
-                <input type="text" placeholder="email id" />
-                <button>Create</button>
+                <input id="usernamesignup" type="text" placeholder="user name" />
+                <input id="passwordsignup" type="text" placeholder="password" />
+                <input id="emailidsignup" type="text" placeholder="email id" />
+                <button onclick="signup();">Create</button>
                 <p class="message">Already Registered? <a href="#">Login</a></p>
             </form>
 
             <form class="login-form">
-                <input type="text" placeholder="user name" />
-                <input type="password" placeholder="password" />
-                <button>login</button>
+                <input id="usernamesignin" type="text" placeholder="Email" />
+                <input id="passwordsignin" type="text" placeholder="password" />
+                <button onclick="login();">login</button>
                 <p class="message">Not Registered? <a href="#">Register</a></p>
 
             </form>
@@ -27,14 +27,82 @@
     <script src='https://code.jquery.com/jquery-3.5.1.min.js'></script>
 
     <script>
-    $('.message a').click(function(){
-    $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-    });
-
-
-
+        $('.message a').click(function () {
+            $('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
+        });
     </script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-analytics.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-firestore.js"></script>
+    
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyAIaP23D9UAPtZnKDkTYayUfaBTbATgEgc",
+            authDomain: "testingksp.firebaseapp.com",
+            databaseURL: "https://testingksp.firebaseio.com",
+            projectId: "testingksp",
+            storageBucket: "testingksp.appspot.com",
+            messagingSenderId: "492086351194",
+            appId: "1:492086351194:web:46c92d46cbd21c7bba8f63",
+            measurementId: "G-66FLPL7LNP"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            var Domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+            if (user) {
+                window.location.href = Domain + "/Home";
+            }
+        });
+
+        function signup() {
+            var email = document.getElementById("emailidsignup").value;
+            var password = document.getElementById("passwordsignup").value;
+            var Domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+           
+            
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((user) => {
+
+                    window.location.href = Domain + "/Home";
+                })
+                .catch((error) => {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    window.alert(errorMessage);
+                });
+        }
+        function login() {
+
+            var emailsignin = document.getElementById("usernamesignin").value;
+            var passwordsignin = document.getElementById("passwordsignin").value; 
+
+            window.alert(emailsignin + " " + passwordsignin);
+            var Domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+
+            firebase.auth().signInWithEmailAndPassword(emailsignin, passwordsignin)
+                .then((user) => {
+                   
+                    window.location.href = Domain;
+                })
+                .catch((error) => {
+                  
+                    var errorMessage = error.message;
+                    window.alert(errorMessage);
+                });
+        }
+       
+    </script>
+    
+     
 
 
-</body>
-</html>
+</body >
+</html >
