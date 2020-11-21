@@ -2,11 +2,36 @@
 
 
 var firebaseConfig = {
-    
+    apiKey: "AIzaSyAIaP23D9UAPtZnKDkTYayUfaBTbATgEgc",
+    authDomain: "testingksp.firebaseapp.com",
+    databaseURL: "https://testingksp.firebaseio.com",
+    projectId: "testingksp",
+    storageBucket: "testingksp.appspot.com",
+    messagingSenderId: "492086351194",
+    appId: "1:492086351194:web:46c92d46cbd21c7bba8f63",
+    measurementId: "G-66FLPL7LNP"
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        email = user.email;
+        document.getElementById("LogIn").innerText = email;
+     } else {
+        document.getElementById("LogIn").innerText = "Login";
+    }
+});
+
+function signout() {
+    var Domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+    firebase.auth().signOut().then(function () {
+        window.location.href = Domain + "/Home";
+    }).catch(function (error) {
+        var errorMessage = error.message;
+        window.alert(errorMessage);
+    });
+}
 
 // Global
 var products = [];
@@ -18,21 +43,21 @@ var juiceDIV = document.getElementById("juiceDIV");
 var saladDIV = document.getElementById("SaladDIV");
 // information 
 var FRUIT = [
-    { name: 'chili', price: 1 },
-    { name: 'Tomato', price: 1 },
-    { name: 'Capsicum', price: 1 }
+    { name: 'chili', price: 2 },
+    { name: 'Tomato', price: 4 },
+    { name: 'Capsicum', price: 5 }
 ];
 
 var JUICE = [
-    { name: 'Juice #1', price: 1 },
-    { name: 'Juice #2', price: 1 },
-    { name: 'Juice #3', price: 1 }
+    { name: 'Apple', price: 3 },
+    { name: 'Banana', price: 2 },
+    { name: 'Orange', price: 5 }
 ];
 
 var SALAD = [
-    { name: 'Salad #1', price: 1 },
-    { name: 'Salad #2', price: 1 },
-    { name: 'Salad #3', price: 1 }
+    { name: 'Milk', price: 3 },
+    { name: 'Brown Bread', price: 2 },
+    { name: 'Cookie', price: 1 }
 ];
 // html 
 function HTMLfruitProduct(con) {
@@ -67,7 +92,7 @@ function HTMLfruitProduct(con) {
 }
 
 function HTMLjuiceProduct(con) {
-    let URL = `img/juice/fruit${con}.jpg`;
+    let URL = `img/fruits/fruit1${con}.jpg`;
     let btn = `btnJuice${con}`;
     return `
   <div class="col-md-4">
@@ -98,7 +123,7 @@ function HTMLjuiceProduct(con) {
 }
 
 function HTMLsaladProduct(con) {
-    let URL = `img/juice/fruit${con}.jpg`;
+    let URL = `img/fruits/fruit2${con}.jpg`;
     let btn = `btnSalad${con}`;
     return `
   <div class="col-md-4">
@@ -177,8 +202,7 @@ var xmlHttp = new XMLHttpRequest();
 var str = Domain + "/API/InsertTODatabase" + "?" + "ProductName=" + name + "&Price=" + price + "&UserID=" + 60080527 + "&ListName=" + ListName;
 xmlHttp.open("GET", str, false); // false for synchronous request
 xmlHttp.send(null);
-window.alert(str);
-window.alert(xmlHttp.responseText);
+
 
 }
 
