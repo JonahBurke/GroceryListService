@@ -8,7 +8,7 @@ namespace GroceryListService.Accessors
     {
         public UserAccessor(SqlConnection connection) : base(connection) { }
 
-        public Boolean UserExists(int id)
+        public bool UserExists(int id)
         {
             return SelectUser(id) != null;
         }
@@ -45,51 +45,75 @@ namespace GroceryListService.Accessors
             }
         }
 
-        public void InsertUser(string email, string password, string nickname)
+        public int InsertUser(User user)
         {
             string query = "INSERT INTO \"User\" (\"email\", \"password\", \"nickname\") values (@Email, @Password, @NickName);";
             using SqlCommand cmd = new SqlCommand(query, GetConnection());
             cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 255);
             cmd.Parameters.Add("@Password", System.Data.SqlDbType.NVarChar, 100);
-            cmd.Parameters.Add("@NickName", System.Data.SqlDbType.NVarChar, 255);
+            if (user.Nickname != null)
+            {
+                cmd.Parameters.Add("@NickName", System.Data.SqlDbType.NVarChar, 255);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@NickName", DBNull.Value);
+            }
 
-            cmd.Parameters["@Email"].Value = email;
-            cmd.Parameters["@Password"].Value = password;
-            cmd.Parameters["@NickName"].Value = nickname;
+            cmd.Parameters["@Email"].Value = user.Email;
+            cmd.Parameters["@Password"].Value = user.Password;
+            if (user.Nickname != null)
+            {
+                cmd.Parameters["@NickName"].Value = user.Nickname;
+            }
             try
             {
                 OpenConnection();
-                SqlDataReader reader = cmd.ExecuteReader();
+                int result = cmd.ExecuteNonQuery();
                 CloseConnection();
-                return;
+                return result;
             }
             catch (SqlException)
             {
-                return;
+                // The database wasn't even accessed, so in case we want to do error messages
+                // use a value that the result will never be.
+                return -1;
             }
         }
 
-        public void UpdateUser(User user)
+        public int UpdateUser(User user)
         {
             string query = "UPDATE \"User\" SET \"email\" = @Email, \"password\" = @Password, \"nickname\" = @NickName;";
             using SqlCommand cmd = new SqlCommand(query, GetConnection());
             cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 255);
             cmd.Parameters.Add("@Password", System.Data.SqlDbType.NVarChar, 100);
-            cmd.Parameters.Add("@NickName", System.Data.SqlDbType.NVarChar, 255);
+            if (user.Nickname != null)
+            {
+                cmd.Parameters.Add("@NickName", System.Data.SqlDbType.NVarChar, 255);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@NickName", DBNull.Value);
+            }
 
             cmd.Parameters["@Email"].Value = user.Email;
             cmd.Parameters["@Password"].Value = user.Password;
-            cmd.Parameters["@NickName"].Value = user.Nickname;
+            if (user.Nickname != null)
+            {
+                cmd.Parameters["@NickName"].Value = user.Nickname;
+            }
             try
             {
                 OpenConnection();
-                SqlDataReader reader = cmd.ExecuteReader();
+                int result = cmd.ExecuteNonQuery();
                 CloseConnection();
-                return;
+                return result;
             }
             catch (SqlException)
             {
-                return;
+                // The database wasn't even accessed, so in case we want to do error messages
+                // use a value that the result will never be.
+                return -1;
             }
         }
     }
