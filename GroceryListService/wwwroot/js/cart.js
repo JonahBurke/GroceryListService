@@ -1,10 +1,34 @@
-var firebaseConfig = {
-    
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  
 
+var firebaseConfig = {
+    apiKey: "AIzaSyAIaP23D9UAPtZnKDkTYayUfaBTbATgEgc",
+    authDomain: "testingksp.firebaseapp.com",
+    databaseURL: "https://testingksp.firebaseio.com",
+    projectId: "testingksp",
+    storageBucket: "testingksp.appspot.com",
+    messagingSenderId: "492086351194",
+    appId: "1:492086351194:web:46c92d46cbd21c7bba8f63",
+    measurementId: "G-66FLPL7LNP"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+firebase.auth().onAuthStateChanged(function (user) {
+    var Domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+    if (!user) {
+        window.alert("Please Log in to access the cart!!!!!");
+        window.location.href = Domain + "/Login";
+    } 
+});
+
+function signout() {
+    var Domain = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+    firebase.auth().signOut().then(function () {
+        window.location.href = Domain + "/Home";
+    }).catch(function (error) {
+        var errorMessage = error.message;
+        window.alert(errorMessage);
+    });
+}
 // Global
 var products=JSON.parse(localStorage.getItem('cart'));
 var cartItems=[];
@@ -13,16 +37,27 @@ var table = document.getElementById("table");
 var total=0;
 
 //HTML
-function tableHTML(i){
+function tableHTML(i) {
+
     return `
                <tr>
                <th scope="row">${i+1}</th>
                <td><img style="width:90px;" src="${products[i].url}"></td>
                <td>${products[i].name}</td>
         <td>
-        <input type="button" value="-" class="qty_button minus" />
-        <input value="1">
-        <input type="button" value="+" class="qty_button plus" />
+        <input type="button" onclick="minus();" value="-" class="qty_button minus" />
+        <input id="quantity" value="1">
+        <input type="button" onclick="plus();" value="+" class="qty_button plus" />
+        <script>
+         var i = 1;
+         function plus(){
+          i++;
+         }
+         function minus(){
+         i--;
+         }
+         document.getElementById("quantity").value = i;
+        </script>
         </td>
                <td>${products[i].price}</td>
                </tr>
@@ -75,7 +110,7 @@ function clean(){
     cart_n.innerHTML='';
     document.getElementById("btnBuy").style.display="none";
     document.getElementById("btnClean").style.display="none";
-
+    
 }
 
 

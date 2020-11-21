@@ -45,8 +45,11 @@
                         <i class="text-warning fas fa-shopping-cart"></i>Shopping
                         Cart <i style="color:yellow;" id="cart_n"></i>
                     </a>
-                    <a class="text-white nav-link" href="/Login">
-                        <i class="far fa-user"></i> Log in
+                    <a id="LogIn" class="text-white nav-link" href="/Login">
+                        <i class="far fa-user"></i>
+                    </a>
+                    <a id="LogIn" class="text-white nav-link" href="#" onclick="signout();">
+                        <i class="far fa-user"></i>Sign Out
                     </a>
                 </form>
             </div>
@@ -67,7 +70,10 @@
                     <div class="container">
                         <div class="carousel-caption">
                             <h1>Grocery List Service</h1>
-                            <p>Our ambition is providing good guidence and best quility products.</p>
+                            <p>
+                                Our ambition is to provide guidance and the best quality products.
+                                .
+                            </p>
                             <p><a role="button" class="btn btn-lg btn-primary" href="#">Products </a></p>
                         </div>
                     </div>
@@ -78,7 +84,10 @@
                     <div class="container">
                         <div class="carousel-caption text-left">
                             <h1>Grocery List Service</h1>
-                            <p>Our ambition is providing good guidence and best quility products.</p>
+                            <p>
+                                Our ambition is to provide guidance and the best quality products.
+                                .
+                            </p>
                             <p><a role="button" class="btn btn-lg btn-primary" href="#">Products </a></p>
                         </div>
                     </div>
@@ -89,7 +98,9 @@
                     <div class="container">
                         <div class="carousel-caption text-right">
                             <h1>Grocery List Service</h1>
-                            <p>Our ambition is providing good guidence and best quility products.</p>
+                            <p>
+                                Our ambition is to provide guidance and the best quality products.
+                            </p>
                             <p><a role="button" class="btn btn-lg btn-primary" href="#">Products </a></p>
                         </div>
                     </div>
@@ -107,16 +118,16 @@
                 <span class="sr-only">Next</span>
             </a>
         </div>
-      
+
         <div class="container marketing">
             <br />
-            <h2 id="fruit">Fruites</h2>
+            <h2 id="fruit">Vegetables</h2>
             <hr />
             <div class="row" id="fruitDIV"></div>
-            <h2 id="juice">Juice</h2>
+            <h2 id="juice">Fruit</h2>
             <hr />
             <div class="row" id="juiceDIV"></div>
-            <h2 id="salad">Salads</h2>
+            <h2 id="salad">Other</h2>
             <hr />
             <div class="row" id="SaladDIV"></div>
             <hr class="featurette-divider" />
@@ -125,7 +136,7 @@
             <p class="float-right">
                 <a href="#">TOP</a>
             </p>
-            
+
         </footer>
     </main>
 
@@ -139,8 +150,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.all.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-analytics.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-firestore.js"></script>
     <script src="./js/main.js"></script>
 
 </body>
