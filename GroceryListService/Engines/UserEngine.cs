@@ -8,7 +8,7 @@ namespace GroceryListService.Engines
 {
     public class UserEngine
     {
-        public Boolean UserExists(int id)
+        public static bool UserExists(int id)
         {
             if (id > 0) // do a little bit of data "cleaning"
             {
@@ -21,7 +21,7 @@ namespace GroceryListService.Engines
             }
         }
 
-        public User SelectUser(int id)
+        public static User SelectUser(int id)
         {
             if (id > 0) // do a little bit of data "cleaning"
             {
@@ -34,21 +34,31 @@ namespace GroceryListService.Engines
             }
         }
 
-        public void InsertUser(string email, string password, string nickname)
+        public static int InsertUser(User user)
         {
-            if(email != null && password != null) // do a little bit of data "cleaning"
+            if(user != null && user.Email != null && user.Password != null) // do a little bit of data "cleaning"
             {
                 UserAccessor ua = new UserAccessor(new SqlConnection(DatabaseInfo.connectionString));
-                ua.InsertUser(email, password, nickname);
+                return ua.InsertUser(user);
+            }
+            else
+            {
+                // Return a value the function won't return to differentiate error codes
+                return -2;
             }
         }
 
-        public void UpdateUser(User user)
+        public static int  UpdateUser(User user)
         {
-            if (user.Id > 0 && user.Email != null && user.Password != null) // do a little bit of data "cleaning"
+            if (user != null && user.Id > 0 && user.Email != null && user.Password != null) // do a little bit of data "cleaning"
             {
                 UserAccessor ua = new UserAccessor(new SqlConnection(DatabaseInfo.connectionString));
-                ua.UpdateUser(user);
+                return ua.UpdateUser(user);
+            }
+            else
+            {
+                // Return a value the function won't return to differentiate error codes
+                return -2;
             }
         }
     }

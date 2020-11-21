@@ -1,6 +1,5 @@
 ﻿using GroceryListService.Models;
 using Microsoft.Data.SqlClient;
-using System;
 using System.Collections.Generic;
 
 namespace GroceryListService.Accessors
@@ -9,7 +8,7 @@ namespace GroceryListService.Accessors
     {
         public ListAccessor(SqlConnection connection) : base(connection) { }
 
-        public Boolean ListExists(string listName, User user)
+        public bool ListExists(string listName, User user)
         {
             return SelectList(listName, user) != null;
         }
@@ -86,7 +85,7 @@ namespace GroceryListService.Accessors
             }
         }
 
-        public void RemoveList(List list)
+        public int RemoveList(List list)
         {
             // Pretty sure we need to do this first
             string itemDelete = "DELETE FROM \"Item\" WHERE listId = (SELECT \"listId\" FROM \"List\" WHERE \"name\" = @ListName AND userId = @UserID);";
@@ -105,18 +104,20 @@ namespace GroceryListService.Accessors
             try
             {
                 OpenConnection();
-                SqlDataReader reader = cmd1.ExecuteReader();
-                reader = cmd2.ExecuteReader();
+                int result1 = cmd1.ExecuteNonQuery();
+                int result2 = cmd2.ExecuteNonQuery();
                 CloseConnection();
-                return;
+                return result1 + result2;
             }
             catch (SqlException)
             {
-                return;
+                // The database wasn't even accessed, so in case we want to do error messages
+                // use a value that the result will never be.
+                return -1;
             }
         }
 
-        public void UpdateList(List list)
+        public int UpdateList(List list)
         {
             string query = "UPDATE \"List\" SET \"name\" = @Name, userId = @UserID WHERE listId = @ListID;";
             using SqlCommand cmd = new SqlCommand(query, GetConnection());
@@ -130,17 +131,19 @@ namespace GroceryListService.Accessors
             try
             {
                 OpenConnection();
-                SqlDataReader reader = cmd.ExecuteReader();
+                int result = cmd.ExecuteNonQuery();
                 CloseConnection();
-                return;
+                return result;
             }
             catch (SqlException)
             {
-                return;
+                // The database wasn't even accessed, so in case we want to do error messages
+                // use a value that the result will never be.
+                return -1;
             }
         }
 
-        public void InsertList(List list)
+        public int InsertList(List list)
         {
             string query = "INSERT INTO \"List\"(\"name\", \"userId\") values (@ListName, @UserID);";
             using SqlCommand cmd = new SqlCommand(query, GetConnection());
@@ -152,13 +155,15 @@ namespace GroceryListService.Accessors
             try
             {
                 OpenConnection();
-                SqlDataReader reader = cmd.ExecuteReader();
+                int result = cmd.ExecuteNonQuery();
                 CloseConnection();
-                return;
+                return result;
             }
             catch (SqlException)
             {
-                return;
+                // The database wasn't even accessed, so in case we want to do error messages
+                // use a value that the result will never be.
+                return -1;
             }
         }
     }

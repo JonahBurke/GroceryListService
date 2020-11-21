@@ -2,16 +2,15 @@
 using GroceryListService.Data;
 using GroceryListService.Models;
 using Microsoft.Data.SqlClient;
-using System;
 using System.Collections.Generic;
 
 namespace GroceryListService.Engines
 {
     public class ListEngine
     {
-        public Boolean ListExists(string listName, User user)
+        public static bool ListExists(string listName, User user)
         {
-            if (listName != null && user.Id > 0) // do a little bit of data "cleaning"
+            if (user != null && listName != null && user.Id > 0) // do a little bit of data "cleaning"
             {
                 ListAccessor la = new ListAccessor(new SqlConnection(DatabaseInfo.connectionString));
                 return la.ListExists(listName, user);
@@ -22,9 +21,9 @@ namespace GroceryListService.Engines
             }
         }
 
-        public List SelectList(string listName, User user)
+        public static List SelectList(string listName, User user)
         {
-            if (listName != null && user.Id > 0) // do a little bit of data "cleaning"
+            if (user != null && listName != null && user.Id > 0) // do a little bit of data "cleaning"
             {
                 ListAccessor la = new ListAccessor(new SqlConnection(DatabaseInfo.connectionString));
                 return la.SelectList(listName, user);
@@ -35,9 +34,9 @@ namespace GroceryListService.Engines
             }
         }
 
-        public List<List> SelectAllLists(User user)
+        public static List<List> SelectAllLists(User user)
         {
-            if (user.Id > 0) // do a little bit of data "cleaning"
+            if (user != null && user.Id > 0) // do a little bit of data "cleaning"
             {
                 ListAccessor la = new ListAccessor(new SqlConnection(DatabaseInfo.connectionString));
                 return la.SelectAllLists(user);
@@ -48,30 +47,45 @@ namespace GroceryListService.Engines
             }
         }
 
-        public void RemoveList(List list)
+        public static int RemoveList(List list)
         {
-            if (list.Id > 0) // do a little bit of data "cleaning"
+            if (list != null && list.Id > 0) // do a little bit of data "cleaning"
             {
                 ListAccessor la = new ListAccessor(new SqlConnection(DatabaseInfo.connectionString));
-                la.RemoveList(list);
+                return la.RemoveList(list);
+            }
+            else
+            {
+                // Return a value the function won't return to differentiate error codes
+                return -2;
             }
         }
 
-        public void UpdateList(List list)
+        public static int UpdateList(List list)
         {
-            if (list.Id > 0 && list.Name != null) // do a little bit of data "cleaning"
+            if (list != null && list.Id > 0 && list.Name != null) // do a little bit of data "cleaning"
             {
                 ListAccessor la = new ListAccessor(new SqlConnection(DatabaseInfo.connectionString));
-                la.UpdateList(list);
+                return la.UpdateList(list);
+            }
+            else
+            {
+                // Return a value the function won't return to differentiate error codes
+                return -2;
             }
         }
 
-        public void InsertList(List list)
+        public static int InsertList(List list)
         {
-            if (list.Id > 0) // do a little bit of data "cleaning"
+            if (list != null && list.Id > 0) // do a little bit of data "cleaning"
             {
                 ListAccessor la = new ListAccessor(new SqlConnection(DatabaseInfo.connectionString));
-                la.InsertList(list);
+                return la.InsertList(list);
+            }
+            else
+            {
+                // Return a value the function won't return to differentiate error codes
+                return -2;
             }
         }
     }

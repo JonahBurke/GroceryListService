@@ -42,7 +42,7 @@ namespace GroceryListService.Accessors
             }
         }
 
-        public Boolean ItemExists(int id)
+        public bool ItemExists(int id)
         {
             return SelectItem(id) != null;
         }
@@ -88,31 +88,45 @@ namespace GroceryListService.Accessors
             }
         }
 
-        public void InsertItem(Item item)
+        public int InsertItem(Item item)
         {
             string query = "INSERT INTO \"Item\" (\"name\", \"quantity\", listId) VALUES (@Name, @Quantity, @ListID);";
             using SqlCommand cmd = new SqlCommand(query, GetConnection());
             cmd.Parameters.Add("@Name", System.Data.SqlDbType.VarChar, 100);
-            cmd.Parameters.Add("@Quantity", System.Data.SqlDbType.Int);
             cmd.Parameters.Add("@ListID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@ItemID", System.Data.SqlDbType.Int);
+            if (item.Quantity > 0)
+            {
+                cmd.Parameters.Add("@Quantity", System.Data.SqlDbType.Int);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@Quantity", DBNull.Value);
+            }
 
             cmd.Parameters["@Name"].Value = item.Name;
-            cmd.Parameters["@Quantity"].Value = item.Quantity;
             cmd.Parameters["@ListID"].Value = item.ListId;
+            cmd.Parameters["@ItemID"].Value = item.Id;
+            if (item.Quantity > 0)
+            {
+                cmd.Parameters["@Quantity"].Value = item.Quantity;
+            }
             try
             {
                 OpenConnection();
-                SqlDataReader reader = cmd.ExecuteReader();
+                int result = cmd.ExecuteNonQuery();
                 CloseConnection();
-
+                return result;
             }
             catch (SqlException)
             {
-                return;
+                // The database wasn't even accessed, so in case we want to do error messages
+                // use a value that the result will never be.
+                return -1;
             }
         }
 
-        public void RemoveItem(int id)
+        public int RemoveItem(int id)
         {
             string query = "DELETE FROM \"Item\" WHERE itemId = @ItemID;";
             using SqlCommand cmd = new SqlCommand(query, GetConnection());
@@ -122,39 +136,53 @@ namespace GroceryListService.Accessors
             try
             {
                 OpenConnection();
-                SqlDataReader reader = cmd.ExecuteReader();
+                int result = cmd.ExecuteNonQuery();
                 CloseConnection();
-
+                return result;
             }
             catch (SqlException)
             {
-                return;
+                // The database wasn't even accessed, so in case we want to do error messages
+                // use a value that the result will never be.
+                return -1;
             }
         }
 
-        public void UpdateItem(Item item)
+        public int UpdateItem(Item item)
         {
             string query = "UPDATE \"Item\" SET \"name\" = @Name, \"quantity\" = @Quantity, listId = @ListID WHERE itemId = @ItemID;";
             using SqlCommand cmd = new SqlCommand(query, GetConnection());
             cmd.Parameters.Add("@Name", System.Data.SqlDbType.VarChar, 100);
-            cmd.Parameters.Add("@Quantity", System.Data.SqlDbType.Int);
             cmd.Parameters.Add("@ListID", System.Data.SqlDbType.Int);
             cmd.Parameters.Add("@ItemID", System.Data.SqlDbType.Int);
+            if (item.Quantity > 0)
+            {
+                cmd.Parameters.Add("@Quantity", System.Data.SqlDbType.Int);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@Quantity", DBNull.Value);
+            }
 
             cmd.Parameters["@Name"].Value = item.Name;
-            cmd.Parameters["@Quantity"].Value = item.Quantity;
             cmd.Parameters["@ListID"].Value = item.ListId;
             cmd.Parameters["@ItemID"].Value = item.Id;
+            if (item.Quantity > 0)
+            {
+                cmd.Parameters["@Quantity"].Value = item.Quantity;
+            }
             try
             {
                 OpenConnection();
-                SqlDataReader reader = cmd.ExecuteReader();
+                int result = cmd.ExecuteNonQuery();
                 CloseConnection();
-
+                return result;
             }
             catch (SqlException)
             {
-                return;
+                // The database wasn't even accessed, so in case we want to do error messages
+                // use a value that the result will never be.
+                return -1;
             }
         }
     }
